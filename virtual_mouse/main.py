@@ -37,7 +37,6 @@ def main():
                 for lm in hand_landmarks.landmark:
                     landmark_list.append((lm.x, lm.y))
 
-                print("Landmarks:", landmark_list)
 
             cv2.imshow("Gesture Mouse", frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
