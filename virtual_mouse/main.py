@@ -1,5 +1,12 @@
 import cv2
 import mediapipe as mp
+import util 
+import pyautogui
+from pynput.mouse import Button, Controller
+
+
+mouse = Controller()
+screen_width, screen_height = pyautogui.size()
 
 mpHands = mp.solutions.hands
 hands = mpHands.Hands(
@@ -10,7 +17,30 @@ hands = mpHands.Hands(
     min_tracking_confidence=0.7
 )
 
+def find_finger_tip(processed):
+    if processed.multi_hand_landmarks:
+        hand_landmarks = processed.multi_hand_landmarks[0]
+        index_finger_tip = hand_landmarks.landmark[mpHands.HandLandmark.INDEX_FINGER_TIP]
+        return index_finger_tip
+    return None
 
+def move_mouse(index_finger_tip):
+    if index_finger_tip is not None:
+        x = int(index_finger_tip.x * screen_width)
+        y = int(index_finger_tip.y * screen_height)
+        pyautogui.moveTo(x, y)
+
+def detect_gesture(frame, landmark_list, processed):
+
+    if len(landmark_list) >= 21:
+        index_finger_tip = find_finger_tip(processed)
+        thumb_index_dist = util.get_distance([landmark_list[4], landmark_list[5]])
+
+        if (
+            util.get_distance([landmark_list[4], landmark_list[5]]) < 50 and
+            util.get_angle(landmark_list[5], landmark_list[6], landmark_list[8]) > 90
+        ):
+            move_mouse(index_finger_tip)
 
 def main():
     cap = cv2.VideoCapture(0)
@@ -36,6 +66,8 @@ def main():
 
                 for lm in hand_landmarks.landmark:
                     landmark_list.append((lm.x, lm.y))
+
+            detect_gesture(frame, landmark_list, processed)
 
 
             cv2.imshow("Gesture Mouse", frame)
