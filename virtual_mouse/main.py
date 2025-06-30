@@ -37,6 +37,13 @@ def is_left_click(landmark_list, thumb_index_dist):
         thumb_index_dist > 50
     )
 
+def is_right_click(landmark_list, thumb_index_dist):
+    return (
+        util.get_angle(landmark_list[9], landmark_list[10], landmark_list[12]) < 50 and
+        util.get_angle(landmark_list[5], landmark_list[6], landmark_list[8]) > 90 and
+        thumb_index_dist > 50
+    )
+
 def detect_gesture(frame, landmark_list, processed):
 
     if len(landmark_list) >= 21:
@@ -52,6 +59,10 @@ def detect_gesture(frame, landmark_list, processed):
             mouse.press(Button.left)
             mouse.release(Button.left)
             cv2.putText(frame, "Left Click", (50, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
+        elif is_right_click(landmark_list, thumb_index_dist):
+            mouse.press(Button.right)
+            mouse.release(Button.right)
+            cv2.putText(frame, "Right Click", (50, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
 
 def main():
     cap = cv2.VideoCapture(0)
