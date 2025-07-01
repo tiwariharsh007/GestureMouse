@@ -5,7 +5,6 @@ import random
 import util
 from pynput.mouse import Button, Controller
 
-
 mouse = Controller()
 screen_width, screen_height = pyautogui.size()
 
