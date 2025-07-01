@@ -71,19 +71,6 @@ Press **`q`** to quit the webcam window.
 
 ---
 
-## 📁 File Structure
-
-```text
-hand-gesture-mouse-controller/
-│
-├── main.py         # Main script with OpenCV, MediaPipe, and gesture logic
-├── util.py               # Utility functions for angle and distance calculations
-├── requirements.txt      # Python dependencies
-└── README.md             # Project documentation
-```
-
----
-
 ## 🧑‍💻 Author
 
 **Harsh Tiwari**
